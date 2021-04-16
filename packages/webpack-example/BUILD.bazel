@@ -1,0 +1,38 @@
+load("@npm//webpack-cli:index.bzl", webpack = "webpack_cli")
+
+webpack(
+    name = "bazel-ts_node_project-repro",
+    outs = ["dist"],
+    args = [
+        "--config",
+        "$(execpath webpack.config.ts)",
+        "--output-path",
+        "$@",
+    ],
+    data = glob([
+        "src/**/*",
+        "webpack.config*",
+        "tsconfig*",
+    ]) + [
+        "@npm//webpack",
+        "@npm//ts-loader",
+        "@npm//typescript",
+        "@npm//tslib",
+        "@npm//clean-webpack-plugin",
+        "@npm//fork-ts-checker-webpack-plugin",
+        "@npm//html-webpack-plugin",
+        "@npm//mini-css-extract-plugin",
+        "@npm//@types/css-minimizer-webpack-plugin",
+        "@npm//@types/node",
+        "@npm//@types/webpack",
+        "@npm//@types/mini-css-extract-plugin",
+        "@npm//css-minimizer-webpack-plugin",
+        "@npm//terser-webpack-plugin",
+        "@npm//ts-node",
+        "@npm//tsconfig-paths",
+        "@npm//webpack-cli",
+        "@npm//webpack-dev-server",
+        "@npm//webpack-merge",
+    ],
+    env = {"TS_NODE_PROJECT": "$(execpath tsconfig.webpack.json)"},
+)

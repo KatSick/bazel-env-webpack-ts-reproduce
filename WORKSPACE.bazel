@@ -1,0 +1,62 @@
+# Bazel workspace created by @bazel/create 2.3.1
+
+# Declares that this directory is the root of a Bazel workspace.
+# See https://docs.bazel.build/versions/master/build-ref.html#workspace
+workspace(
+    # How this workspace would be referenced with absolute labels from another workspace
+    name = "bazel-example",
+    # Map the @npm bazel workspace to the node_modules directory.
+    # This lets Bazel use the same node_modules as other local tooling.
+    managed_directories = {"@npm": ["node_modules"]},
+)
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "bazel_skylib",
+    sha256 = "1c531376ac7e5a180e0237938a2536de0c54d93f5c278634818e0efc952dd56c",
+    urls = [
+        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.0.3/bazel-skylib-1.0.3.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.3/bazel-skylib-1.0.3.tar.gz",
+    ],
+)
+
+http_archive(
+    name = "build_bazel_rules_nodejs",
+    sha256 = "f533eeefc8fe1ddfe93652ec50f82373d0c431f7faabd5e6323f6903195ef227",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/3.3.0/rules_nodejs-3.3.0.tar.gz"],
+)
+
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
+bazel_skylib_workspace()
+
+load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
+
+# Setup the Node.js toolchain
+node_repositories(
+    # override bazel mirror, to official nodejs dist
+    node_urls = ["https://nodejs.org/dist/v{version}/{filename}"],
+    node_version = "12.16.3",
+    package_json = ["//:package.json"],
+    yarn_version = "1.22.4",
+)
+
+yarn_install(
+    # Name this npm so that Bazel Label references look like @npm//<package>
+    name = "npm",
+    # limit the number of files that are inputs to actions that depend on npm package targets
+    included_files = [
+        ".js",
+        ".d.ts",
+        ".yml",
+        ".json",
+        ".css",
+        ".template",
+        "",  # binaries live without extension
+    ],
+    package_json = "//:package.json",
+    # Allow to add a Bazel dependency on a library that isn't listed as a dependency in package.json.
+    strict_visibility = False,
+    yarn_lock = "//:yarn.lock",
+)

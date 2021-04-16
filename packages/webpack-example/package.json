@@ -1,0 +1,35 @@
+{
+  "name": "webpack-example",
+  "version": "1.0.0",
+  "description": "Reproduce env issue with bazel + webpack + tsnode",
+  "main": "index.js",
+  "scripts": {
+    "dev": "TS_NODE_PROJECT=tsconfig.webpack.json webpack serve --config webpack.config.dev.ts",
+    "build": "TS_NODE_PROJECT=tsconfig.webpack.json webpack --config webpack.config.ts"
+  },
+  "keywords": [],
+  "author": "Ostap Chervak <chervakostap@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@bazel/bazelisk": "^1.7.5",
+    "@bazel/buildifier": "^4.0.1",
+    "@bazel/typescript": "^3.4.0",
+    "@types/css-minimizer-webpack-plugin": "^1.1.3",
+    "@types/mini-css-extract-plugin": "^1.4.1",
+    "@types/node": "^14.14.41",
+    "@types/webpack": "^5.28.0",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "css-minimizer-webpack-plugin": "^2.0.0",
+    "fork-ts-checker-webpack-plugin": "^6.2.1",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.4.1",
+    "ts-loader": "^8.1.0",
+    "ts-node": "^9.1.1",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.2.4",
+    "webpack": "^5.33.2",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^4.0.0-beta.2",
+    "webpack-merge": "^5.7.3"
+  }
+}
